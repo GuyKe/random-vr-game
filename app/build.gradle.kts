@@ -1,11 +1,11 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
     namespace = "com.randomvrgame.helloworld"
     compileSdk = 34
+    ndkVersion = "26.1.10909125"
 
     defaultConfig {
         applicationId = "com.randomvrgame.helloworld"
@@ -14,6 +14,17 @@ android {
         targetSdk = 32
         versionCode = 1
         versionName = "1.0"
+
+        // All shipping Quest headsets are arm64-v8a only.
+        ndk {
+            abiFilters += "arm64-v8a"
+        }
+
+        externalNativeBuild {
+            cmake {
+                cppFlags += "-std=c++17"
+            }
+        }
     }
 
     buildTypes {
@@ -31,12 +42,20 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
+
+    // Required for Gradle to expose the openxr_loader_for_android AAR's
+    // headers and .so to our CMake build via find_package(OpenXR).
+    buildFeatures {
+        prefab = true
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("org.khronos.openxr:openxr_loader_for_android:1.1.42")
 }
