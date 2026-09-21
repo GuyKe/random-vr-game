@@ -5,13 +5,10 @@ as an APK.
 
 It's a native OpenXR app (C++, NDK, `android.app.NativeActivity` — no
 Kotlin/Java UI, no game engine). On launch it opens a real OpenXR session
-and renders a solid color to each eye every frame: blue for the left eye,
-orange for the right. That's intentionally as simple as a VR "hello world"
-gets — it proves the whole pipeline (instance → session → swapchains →
-per-frame submission, head-tracked) actually works, without betting on
-unverified 3D math for a build nobody's tested on real hardware yet. A
-rotating cube or similar is a natural next step once this is confirmed
-working on-device.
+and renders a big sign reading "SKELETON" floating about 2.5m in front of
+where you started, head-tracked in stereo. The sign's pixels are generated
+at startup from a small hand-drawn bitmap font baked directly into the C++
+code — no font file, no Android Canvas/JNI round-trip.
 
 It uses the Khronos-published `openxr_loader_for_android` (from Maven
 Central) to talk to whatever OpenXR runtime Quest's system software
@@ -49,5 +46,5 @@ when you don't have the Android SDK installed locally.
 
 4. Find "Hello Meta Quest" under the headset's **Unknown Sources** /
    **App Library** (filter by "Unknown Sources") and launch it. You should
-   be dropped into a solid-colored immersive view instead of your Home
-   environment — that's the app running.
+   be dropped into an immersive view with a big "SKELETON" sign floating in
+   front of you — that's the app running.
